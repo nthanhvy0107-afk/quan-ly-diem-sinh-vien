@@ -36,13 +36,13 @@ st.markdown("""
 # --- 3. Hàm xử lý tính toán và xếp loại ---
 def xep_loai(diem):
     if diem >= 8.5:
-        return 'Giỏi 🌟'
+        return 'Giỏi'
     elif diem >= 7.0:
-        return 'Khá 👍'
+        return 'Khá'
     elif diem >= 5.0:
-        return 'Trung bình 📚'
+        return 'Trung bình'
     else:
-        return 'Yếu ⚠️'
+        return 'Yếu'
 
 # Khởi tạo dữ liệu ban đầu vào Session State để có thể thêm sinh viên động
 if 'df' not in st.session_state:
@@ -66,9 +66,9 @@ st.sidebar.markdown("---")
 # Tác giả
 st.sidebar.subheader("👤 Thông tin tác giả")
 st.sidebar.info(
-    "💖 **Họ tên:** [Họ và tên của bạn]\n\n"
-    "🎓 **MSSV:** [MSSV của bạn]\n\n"
-    "🏫 **Lớp:** [Tên lớp của bạn]"
+    " **Họ tên:** [Họ và tên của bạn]\n\n"
+    " **MSSV:** [MSSV của bạn]\n\n"
+    " **Lớp:** [Tên lớp của bạn]"
 )
 st.sidebar.markdown("---")
 
@@ -105,15 +105,15 @@ st.sidebar.markdown("---")
 st.sidebar.subheader("🔍 Lọc theo xếp loại")
 selected_ranks = st.sidebar.multiselect(
     "Chọn mức xếp loại muốn hiển thị:",
-    options=['Giỏi 🌟', 'Khá 👍', 'Trung bình 📚', 'Yếu ⚠️'],
-    default=['Giỏi 🌟', 'Khá 👍', 'Trung bình 📚', 'Yếu ⚠️']
+    options=['Giỏi', 'Khá', 'Trung bình', 'Yếu'],
+    default=['Giỏi', 'Khá', 'Trung bình', 'Yếu']
 )
 
 # Lọc dữ liệu theo lựa chọn của người dùng
 filtered_df = df[df['Xep_loai'].isin(selected_ranks)]
 
 # --- 5. GIAO DIỆN CHÍNH ---
-st.title("🌸 QUẢN LÝ ĐIỂM SINH VIÊN - PRO EDITION")
+st.title("🌸 QUẢN LÝ ĐIỂM SINH VIÊN ")
 st.markdown("<p align='center' style='color: #4A5568; font-size: 16px;'>Hệ thống quản lý học tập thông minh với biểu đồ trực quan và tương tác trực tiếp</p>", unsafe_allow_html=True)
 st.markdown("---")
 
@@ -146,11 +146,11 @@ st.markdown(f"""
 <div style="background-color: #FFFFFF; padding: 20px; border-radius: 10px; border: 1px solid #FBCFE8;">
     <h4 style="color: #DB2777; margin-top: 0;">💌 Thông tin học tập của: {student_info['Ho_ten']}</h4>
     <ul style="list-style-type: none; padding-left: 0; color: #2D3748; font-size: 15px;">
-        <li>🎒 <b>Điểm Chuyên cần:</b> {student_info['Chuyen_can']}</li>
-        <li>📝 <b>Điểm Giữa kỳ:</b> {student_info['Giua_ky']}</li>
-        <li>📖 <b>Điểm Cuối kỳ:</b> {student_info['Cuoi_ky']}</li>
-        <li>✨ <b>Điểm Tổng kết:</b> <b>{student_info['Tong_ket']:.2f}</b></li>
-        <li>🎀 <b>Xếp loại:</b> <b>{student_info['Xep_loai']}</b></li>
+        <li> <b>Điểm Chuyên cần:</b> {student_info['Chuyen_can']}</li>
+        <li> <b>Điểm Giữa kỳ:</b> {student_info['Giua_ky']}</li>
+        <li> <b>Điểm Cuối kỳ:</b> {student_info['Cuoi_ky']}</li>
+        <li> <b>Điểm Tổng kết:</b> <b>{student_info['Tong_ket']:.2f}</b></li>
+        <li> <b>Xếp loại:</b> <b>{student_info['Xep_loai']}</b></li>
     </ul>
 </div>
 """, unsafe_allow_html=True)
