@@ -66,9 +66,9 @@ st.sidebar.markdown("---")
 # Tác giả
 st.sidebar.subheader("👤 Thông tin tác giả")
 st.sidebar.info(
-    "💖 **Họ tên:** [Nguyễn Thanh Vy]\n\n"
-    "🎓 **MSSV:** [068308007084]\n\n"
-    "🏫 **Lớp:** [KT-Điện]"
+    "💖 **Họ tên:** [Họ và tên của bạn]\n\n"
+    "🎓 **MSSV:** [MSSV của bạn]\n\n"
+    "🏫 **Lớp:** [Tên lớp của bạn]"
 )
 st.sidebar.markdown("---")
 
@@ -101,12 +101,13 @@ with st.sidebar.form("add_student_form"):
 
 st.sidebar.markdown("---")
 
-# Bộ lọc xếp loại đã được đồng bộ chuẩn xác văn bản
+# Bộ lọc xếp loại (Mặc định chọn tất cả để không bị trống bảng)
 st.sidebar.subheader("🔍 Lọc theo xếp loại")
+all_ranks = ['Giỏi', 'Khá', 'Trung bình', 'Yếu']
 selected_ranks = st.sidebar.multiselect(
     "Chọn mức xếp loại muốn hiển thị:",
-    options=['Giỏi', 'Khá', 'Trung bình', 'Yếu'],
-    default=['Giỏi', 'Khá', 'Trung bình', 'Yếu']
+    options=all_ranks,
+    default=all_ranks
 )
 
 # Lọc dữ liệu
@@ -181,7 +182,7 @@ st.pyplot(fig)
 st.markdown("---")
 st.markdown(
     "<p style='text-align: center; color: #6B7280; font-size: 13px;'>"
-    "🌸 Developed with 💖 by <b>[Nguyễn Thanh Vy]</b> 🌸"
+    "🌸 Developed with 💖 by <b>[Họ và tên của bạn]</b> (MSSV: [MSSV của bạn]) 🌸"
     "</p>", 
     unsafe_allow_html=True
 )
