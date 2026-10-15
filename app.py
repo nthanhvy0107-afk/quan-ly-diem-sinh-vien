@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # --- 1. Cấu hình trang web ---
 st.set_page_config(
-    page_title="Quản Lý Điểm Sinh Viên - Pro Edition",
+    page_title="Quản Lý Điểm Sinh Viên",
     page_icon="🌸",
     layout="wide"
 )
@@ -66,9 +66,8 @@ st.sidebar.markdown("---")
 # Tác giả
 st.sidebar.subheader("👤 Thông tin tác giả")
 st.sidebar.info(
-    "💖 **Họ tên:** [Họ và tên của bạn]\n\n"
-    "🎓 **MSSV:** [MSSV của bạn]\n\n"
-    "🏫 **Lớp:** [Tên lớp của bạn]"
+    " **Họ tên:** [Nguyễn Thanh Vy]\n\n"
+    " **MSSV:** [068308007084]\n\n"
 )
 st.sidebar.markdown("---")
 
@@ -99,20 +98,6 @@ with st.sidebar.form("add_student_form"):
         else:
             st.sidebar.error("Vui lòng nhập tên sinh viên!")
 
-st.sidebar.markdown("---")
-
-# Bộ lọc xếp loại (Mặc định chọn tất cả để không bị trống bảng)
-st.sidebar.subheader("🔍 Lọc theo xếp loại")
-all_ranks = ['Giỏi', 'Khá', 'Trung bình', 'Yếu']
-selected_ranks = st.sidebar.multiselect(
-    "Chọn mức xếp loại muốn hiển thị:",
-    options=all_ranks,
-    default=all_ranks
-)
-
-# Lọc dữ liệu
-filtered_df = df[df['Xep_loai'].isin(selected_ranks)]
-
 # --- 5. GIAO DIỆN CHÍNH ---
 st.title("🌸 QUẢN LÝ ĐIỂM SINH VIÊN - PRO EDITION")
 st.markdown("<p align='center' style='color: #4A5568; font-size: 16px;'>Hệ thống quản lý học tập thông minh với biểu đồ trực quan và tương tác trực tiếp</p>", unsafe_allow_html=True)
@@ -134,9 +119,9 @@ col4.metric("Điểm cao nhất", f"{max_row['Ho_ten']} ({max_row['Tong_ket']:.2
 
 st.markdown("---")
 
-# Hiển thị bảng điểm sau khi lọc
-st.subheader("📋 Bảng điểm chi tiết (Đã lọc)")
-st.dataframe(filtered_df, use_container_width=True)
+# Hiển thị bảng điểm đầy đủ
+st.subheader("📋 Bảng điểm chi tiết của lớp")
+st.dataframe(df, use_container_width=True)
 
 # Tra cứu thông tin cá nhân sinh viên bằng Selectbox
 st.subheader("🔎 Tra cứu chi tiết cá nhân")
@@ -147,17 +132,17 @@ if len(df) > 0:
     <div style="background-color: #FFFFFF; padding: 20px; border-radius: 10px; border: 1px solid #FBCFE8;">
         <h4 style="color: #DB2777; margin-top: 0;">💌 Thông tin học tập của: {student_info['Ho_ten']}</h4>
         <ul style="list-style-type: none; padding-left: 0; color: #2D3748; font-size: 15px;">
-            <li>🎒 <b>Điểm Chuyên cần:</b> {student_info['Chuyen_can']}</li>
-            <li>📝 <b>Điểm Giữa kỳ:</b> {student_info['Giua_ky']}</li>
-            <li>📖 <b>Điểm Cuối kỳ:</b> {student_info['Cuoi_ky']}</li>
-            <li>✨ <b>Điểm Tổng kết:</b> <b>{student_info['Tong_ket']:.2f}</b></li>
-            <li>🎀 <b>Xếp loại:</b> <b>{student_info['Xep_loai']}</b></li>
+            <li> <b>Điểm Chuyên cần:</b> {student_info['Chuyen_can']}</li>
+            <li> <b>Điểm Giữa kỳ:</b> {student_info['Giua_ky']}</li>
+            <li> <b>Điểm Cuối kỳ:</b> {student_info['Cuoi_ky']}</li>
+            <li> <b>Điểm Tổng kết:</b> <b>{student_info['Tong_ket']:.2f}</b></li>
+            <li> <b>Xếp loại:</b> <b>{student_info['Xep_loai']}</b></li>
         </ul>
     </div>
     """, unsafe_allow_html=True)
 
 # Biểu đồ cột ngang
-st.subheader("📈 Biểu đồ điểm tổng kết của toàn bộ lớp")
+st.subheader(" Biểu đồ điểm tổng kết của toàn bộ lớp")
 fig, ax = plt.subplots(figsize=(9, max(4, len(df)*0.4)))
 
 bars = ax.barh(df['Ho_ten'], df['Tong_ket'], color='#F472B6', edgecolor='#10B981', linewidth=1.2)
@@ -182,7 +167,7 @@ st.pyplot(fig)
 st.markdown("---")
 st.markdown(
     "<p style='text-align: center; color: #6B7280; font-size: 13px;'>"
-    "🌸 Developed with 💖 by <b>[Họ và tên của bạn]</b> (MSSV: [MSSV của bạn]) 🌸"
+    "🌸 Developed with 💖 by <b>[Nguyễn Thanh Vy]</b> ) 🌸"
     "</p>", 
     unsafe_allow_html=True
 )
