@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # --- 1. Cấu hình trang web ---
 st.set_page_config(
-    page_title="Quản Lý Điểm Sinh Viên - Pro Edition",
+    page_title="Quản Lý Điểm Sinh Viên",
     page_icon="🌸",
     layout="wide"
 )
@@ -66,9 +66,8 @@ st.sidebar.markdown("---")
 # Tác giả
 st.sidebar.subheader("👤 Thông tin tác giả")
 st.sidebar.info(
-    "💖 **Họ tên:** [Họ và tên của bạn]\n\n"
-    "🎓 **MSSV:** [MSSV của bạn]\n\n"
-    "🏫 **Lớp:** [Tên lớp của bạn]"
+    "**Họ tên:** [Nguyễn Thanh Vy]\n\n"
+    "**MSSV:** [068308007084]\n\n"
 )
 st.sidebar.markdown("---")
 
@@ -100,7 +99,7 @@ with st.sidebar.form("add_student_form"):
             st.sidebar.error("Vui lòng nhập tên sinh viên!")
 
 # --- 5. GIAO DIỆN CHÍNH ---
-st.title("🌸 QUẢN LÝ ĐIỂM SINH VIÊN - PRO EDITION")
+st.title("🌸 QUẢN LÝ ĐIỂM SINH VIÊN")
 st.markdown("<p align='center' style='color: #4A5568; font-size: 16px;'>Hệ thống quản lý học tập thông minh với biểu đồ trực quan và tương tác trực tiếp</p>", unsafe_allow_html=True)
 st.markdown("---")
 
@@ -168,7 +167,7 @@ st.pyplot(fig)
 st.markdown("---")
 st.markdown(
     "<p style='text-align: center; color: #6B7280; font-size: 13px;'>"
-    "🌸 Developed with 💖 by <b>[Họ và tên của bạn]</b> (MSSV: [MSSV của bạn]) 🌸"
+    "🌸 Developed with 💖 by <b>[Nguyễn Thanh Vy]</b> 🌸"
     "</p>", 
     unsafe_allow_html=True
 )
