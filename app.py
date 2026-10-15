@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # --- 1. Cấu hình trang web ---
 st.set_page_config(
-    page_title="Quản Lý Điểm Sinh Viên",
+    page_title="Quản Lý Điểm Sinh Viên - Pro Edition",
     page_icon="🌸",
     layout="wide"
 )
@@ -33,7 +33,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- 3. Hàm xử lý tính toán và xếp loại ---
+# --- 3. Hàm xử lý tính toán và xếp loại (Đã bỏ icon) ---
 def xep_loai(diem):
     if diem >= 8.5:
         return 'Giỏi'
@@ -66,8 +66,9 @@ st.sidebar.markdown("---")
 # Tác giả
 st.sidebar.subheader("👤 Thông tin tác giả")
 st.sidebar.info(
-    " **Họ tên:** [Nguyễn Thanh Vy]\n\n"
-    " **MSSV:** [068308007084]\n\n"
+    "💖 **Họ tên:** [Họ và tên của bạn]\n\n"
+    "🎓 **MSSV:** [MSSV của bạn]\n\n"
+    "🏫 **Lớp:** [Tên lớp của bạn]"
 )
 st.sidebar.markdown("---")
 
@@ -132,17 +133,17 @@ if len(df) > 0:
     <div style="background-color: #FFFFFF; padding: 20px; border-radius: 10px; border: 1px solid #FBCFE8;">
         <h4 style="color: #DB2777; margin-top: 0;">💌 Thông tin học tập của: {student_info['Ho_ten']}</h4>
         <ul style="list-style-type: none; padding-left: 0; color: #2D3748; font-size: 15px;">
-            <li> <b>Điểm Chuyên cần:</b> {student_info['Chuyen_can']}</li>
-            <li> <b>Điểm Giữa kỳ:</b> {student_info['Giua_ky']}</li>
-            <li> <b>Điểm Cuối kỳ:</b> {student_info['Cuoi_ky']}</li>
-            <li> <b>Điểm Tổng kết:</b> <b>{student_info['Tong_ket']:.2f}</b></li>
-            <li> <b>Xếp loại:</b> <b>{student_info['Xep_loai']}</b></li>
+            <li>🎒 <b>Điểm Chuyên cần:</b> {student_info['Chuyen_can']}</li>
+            <li>📝 <b>Điểm Giữa kỳ:</b> {student_info['Giua_ky']}</li>
+            <li>📖 <b>Điểm Cuối kỳ:</b> {student_info['Cuoi_ky']}</li>
+            <li>✨ <b>Điểm Tổng kết:</b> <b>{student_info['Tong_ket']:.2f}</b></li>
+            <li>📋 <b>Xếp loại:</b> <b>{student_info['Xep_loai']}</b></li>
         </ul>
     </div>
     """, unsafe_allow_html=True)
 
 # Biểu đồ cột ngang
-st.subheader(" Biểu đồ điểm tổng kết của toàn bộ lớp")
+st.subheader("📈 Biểu đồ điểm tổng kết của toàn bộ lớp")
 fig, ax = plt.subplots(figsize=(9, max(4, len(df)*0.4)))
 
 bars = ax.barh(df['Ho_ten'], df['Tong_ket'], color='#F472B6', edgecolor='#10B981', linewidth=1.2)
@@ -167,7 +168,7 @@ st.pyplot(fig)
 st.markdown("---")
 st.markdown(
     "<p style='text-align: center; color: #6B7280; font-size: 13px;'>"
-    "🌸 Developed with 💖 by <b>[Nguyễn Thanh Vy]</b> ) 🌸"
+    "🌸 Developed with 💖 by <b>[Họ và tên của bạn]</b> (MSSV: [MSSV của bạn]) 🌸"
     "</p>", 
     unsafe_allow_html=True
 )
