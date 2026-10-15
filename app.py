@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # --- 1. Cấu hình trang web ---
 st.set_page_config(
-    page_title="Quản Lý Điểm Sinh Viên - Pro Edition",
+    page_title="Quản Lý Điểm Sinh Viên",
     page_icon="🌸",
     layout="wide"
 )
@@ -66,9 +66,8 @@ st.sidebar.markdown("---")
 # Tác giả
 st.sidebar.subheader("👤 Thông tin tác giả")
 st.sidebar.info(
-    " **Họ tên:** [Họ và tên của bạn]\n\n"
-    " **MSSV:** [MSSV của bạn]\n\n"
-    " **Lớp:** [Tên lớp của bạn]"
+    " **Họ tên:** [Nguyễn Thanh Vy]\n\n"
+    " **MSSV:** [068308007084]\n\n"
 )
 st.sidebar.markdown("---")
 
