@@ -4,63 +4,36 @@ import matplotlib.pyplot as plt
 
 # --- 1. Cấu hình trang web ---
 st.set_page_config(
-    page_title="Quản Lý Điểm Sinh Viên - Modern Pastel",
+    page_title="Quản Lý Điểm Sinh Viên - Pro Edition",
     page_icon="🌸",
     layout="wide"
 )
 
-# --- 2. Tùy chỉnh CSS phối màu Hồng Pastel + Xám Khói + Xanh Mint (Cute, hiện đại, không sến) ---
+# --- 2. Tùy chỉnh CSS (Hồng pastel + Xám khói + Xanh mint) ---
 st.markdown("""
     <style>
-    /* Nền tổng thể: Hồng pastel cực nhạt, nhẹ nhàng */
     .stApp {
         background-color: #FFF5F7;
         color: #2D3748;
     }
-    /* Tiêu đề chính: Hồng đậm vừa phải, sang trọng */
     h1 {
         color: #DB2777;
         text-align: center;
         font-family: 'Inter', sans-serif;
         font-weight: 700;
     }
-    /* Các tiêu đề phụ */
     h2, h3 {
         color: #BE185D;
         font-family: 'Inter', sans-serif;
     }
-    /* Sidebar: Hồng pastel ấm áp */
     [data-testid="stSidebar"] {
         background-color: #FDE8EC;
         border-right: 1px solid #FBCFE8;
     }
-    /* Các khung thông báo (Success, Info...) mang màu Xanh Mint và Hồng nhạt */
-    .stSuccess {
-        background-color: #D1FAE5 !important;
-        color: #065F46 !important;
-        border-left: 4px solid #10B981;
-    }
-    .stInfo {
-        background-color: #FCE7F3 !important;
-        color: #831843 !important;
-        border-left: 4px solid #EC4899;
-    }
     </style>
 """, unsafe_allow_html=True)
 
-# --- 3. Dữ liệu và tính toán điểm ---
-data = {
-    'Ho_ten': ['An', 'Bình', 'Chi', 'Dũng', 'Hà', 'Lan', 'Minh', 'Nam', 'Phúc', 'Trang'],
-    'Chuyen_can': [8.0, 9.0, 7.0, 8.5, 7.5, 6.0, 9.0, 7.0, 8.0, 9.5],
-    'Giua_ky': [7.5, 8.0, 6.5, 9.0, 7.0, 6.0, 8.5, 7.0, 7.5, 9.0],
-    'Cuoi_ky': [8.0, 8.5, 7.0, 9.5, 7.5, 6.5, 8.5, 7.5, 7.5, 9.0]
-}
-df = pd.DataFrame(data)
-
-# Tính điểm tổng kết
-df['Tong_ket'] = (0.2 * df['Chuyen_can']) + (0.3 * df['Giua_ky']) + (0.5 * df['Cuoi_ky'])
-
-# Hàm xếp loại
+# --- 3. Hàm xử lý tính toán và xếp loại ---
 def xep_loai(diem):
     if diem >= 8.5:
         return 'Giỏi 🌟'
@@ -71,11 +44,26 @@ def xep_loai(diem):
     else:
         return 'Yếu ⚠️'
 
-df['Xep_loai'] = df['Tong_ket'].apply(xep_loai)
+# Khởi tạo dữ liệu ban đầu vào Session State để có thể thêm sinh viên động
+if 'df' not in st.session_state:
+    data = {
+        'Ho_ten': ['An', 'Bình', 'Chi', 'Dũng', 'Hà', 'Lan', 'Minh', 'Nam', 'Phúc', 'Trang'],
+        'Chuyen_can': [8.0, 9.0, 7.0, 8.5, 7.5, 6.0, 9.0, 7.0, 8.0, 9.5],
+        'Giua_ky': [7.5, 8.0, 6.5, 9.0, 7.0, 6.0, 8.5, 7.0, 7.5, 9.0],
+        'Cuoi_ky': [8.0, 8.5, 7.0, 9.5, 7.5, 6.5, 8.5, 7.5, 7.5, 9.0]
+    }
+    df_init = pd.DataFrame(data)
+    df_init['Tong_ket'] = (0.2 * df_init['Chuyen_can']) + (0.3 * df_init['Giua_ky']) + (0.5 * df_init['Cuoi_ky'])
+    df_init['Xep_loai'] = df_init['Tong_ket'].apply(xep_loai)
+    st.session_state['df'] = df_init
 
-# --- 4. THANH BÊN (SIDEBAR) - THÔNG TIN TÁC GIẢ ---
-st.sidebar.title("✨ Bảng Điều Khiển")
+df = st.session_state['df']
+
+# --- 4. THANH BÊN (SIDEBAR): Tác giả + Thêm sinh viên + Bộ lọc ---
+st.sidebar.title("✨ Menu Điều Hướng")
 st.sidebar.markdown("---")
+
+# Tác giả
 st.sidebar.subheader("👤 Thông tin tác giả")
 st.sidebar.info(
     "💖 **Họ tên:** [Họ và tên của bạn]\n\n"
@@ -83,39 +71,77 @@ st.sidebar.info(
     "🏫 **Lớp:** [Tên lớp của bạn]"
 )
 st.sidebar.markdown("---")
-st.sidebar.write("💡 *Ứng dụng quản lý điểm học tập sinh viên phong cách Pastel hiện đại.*")
+
+# TÍNH NĂNG 2: Form thêm sinh viên mới trực tiếp trên web
+st.sidebar.subheader("➕ Thêm sinh viên mới")
+with st.sidebar.form("add_student_form"):
+    new_name = st.text_input("Họ tên sinh viên:")
+    new_cc = st.number_input("Điểm Chuyên cần:", 0.0, 10.0, 8.0)
+    new_gk = st.number_input("Điểm Giữa kỳ:", 0.0, 10.0, 7.5)
+    new_ck = st.number_input("Điểm Cuối kỳ:", 0.0, 10.0, 8.0)
+    
+    submit_btn = st.form_submit_button("Thêm vào danh sách")
+    if submit_btn:
+        if new_name.strip() != "":
+            tong_ket_moi = (0.2 * new_cc) + (0.3 * new_gk) + (0.5 * new_ck)
+            xep_loai_moi = xep_loai(tong_ket_moi)
+            new_row = pd.DataFrame({
+                'Ho_ten': [new_name],
+                'Chuyen_can': [new_cc],
+                'Giua_ky': [new_gk],
+                'Cuoi_ky': [new_ck],
+                'Tong_ket': [tong_ket_moi],
+                'Xep_loai': [xep_loai_moi]
+            })
+            st.session_state['df'] = pd.concat([st.session_state['df'], new_row], ignore_index=True)
+            st.sidebar.success(f"Đã thêm sinh viên {new_name} thành công!")
+            st.rerun()
+        else:
+            st.sidebar.error("Vui lòng nhập tên sinh viên!")
+
+st.sidebar.markdown("---")
+
+# TÍNH NĂNG 1: Bộ lọc xếp loại (Filter by Grade)
+st.sidebar.subheader("🔍 Lọc theo xếp loại")
+selected_ranks = st.sidebar.multiselect(
+    "Chọn mức xếp loại muốn hiển thị:",
+    options=['Giỏi 🌟', 'Khá 👍', 'Trung bình 📚', 'Yếu ⚠️'],
+    default=['Giỏi 🌟', 'Khá 👍', 'Trung bình 📚', 'Yếu ⚠️']
+)
+
+# Lọc dữ liệu theo lựa chọn của người dùng
+filtered_df = df[df['Xep_loai'].isin(selected_ranks)]
 
 # --- 5. GIAO DIỆN CHÍNH ---
-st.title("🌸 QUẢN LÝ ĐIỂM SINH VIÊN")
-st.markdown("<p align='center' style='color: #4A5568; font-size: 16px;'>Hệ thống trực quan hóa điểm số, thống kê và tra cứu thông tin học tập</p>", unsafe_allow_html=True)
+st.title("🌸 QUẢN LÝ ĐIỂM SINH VIÊN - PRO EDITION")
+st.markdown("<p align='center' style='color: #4A5568; font-size: 16px;'>Hệ thống quản lý học tập thông minh với biểu đồ trực quan và tương tác trực tiếp</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# Hiển thị bảng điểm
-st.subheader("📋 Bảng điểm chi tiết của 10 sinh viên")
-st.dataframe(df, use_container_width=True)
-
-# Thống kê chung
+# TÍNH NĂNG 3: Thẻ chỉ số nổi bật chuẩn doanh nghiệp (st.metric)
 st.subheader("📊 Thống kê tổng quan lớp học")
 diem_tb_lop = df['Tong_ket'].mean()
-max_sv = df.loc[df['Tong_ket'].idxmax()]
-min_sv = df.loc[df['Tong_ket'].idxmin()]
+max_row = df.loc[df['Tong_ket'].idxmax()]
+min_row = df.loc[df['Tong_ket'].idxmin()]
 so_sv_dat = (df['Tong_ket'] >= 5.0).sum()
+tong_so_sv = len(df)
 
-col1, col2 = st.columns(2)
-with col1:
-    st.success(f"📈 **Điểm tổng kết trung bình lớp:** {diem_tb_lop:.2f}")
-    st.success(f"✨ **Số sinh viên đạt (>= 5.0):** {so_sv_dat} / 10 sinh viên")
-with col2:
-    st.info(f"🏆 **Điểm cao nhất:** {max_sv['Ho_ten']} ({max_sv['Tong_ket']:.2f} điểm)")
-    st.info(f"📌 **Điểm thấp nhất:** {min_sv['Ho_ten']} ({min_sv['Tong_ket']:.2f} điểm)")
+col1, col2, col3, col4 = st.columns(4)
+col1.metric("Tổng số sinh viên", f"{tong_so_sv} bạn")
+col2.metric("Điểm TB của lớp", f"{diem_tb_lop:.2f}")
+col3.metric("Sinh viên đạt (>=5đ)", f"{so_sv_dat} bạn")
+col4.metric("Điểm cao nhất", f"{max_row['Ho_ten']} ({max_row['Tong_ket']:.2f})")
 
-# Tra cứu sinh viên bằng Selectbox
-st.subheader("🔍 Tra cứu chi tiết cá nhân")
+st.markdown("---")
+
+# Hiển thị bảng điểm (sau khi đã qua bộ lọc)
+st.subheader("📋 Bảng điểm chi tiết (Đã lọc)")
+st.dataframe(filtered_df, use_container_width=True)
+
+# Tra cứu thông tin cá nhân sinh viên bằng Selectbox
+st.subheader("🔎 Tra cứu chi tiết cá nhân")
 selected_student = st.selectbox("✨ Chọn tên sinh viên để xem chi tiết:", df['Ho_ten'])
 
 student_info = df[df['Ho_ten'] == selected_student].iloc[0]
-
-# Hiển thị kết quả tra cứu dạng box nổi bật
 st.markdown(f"""
 <div style="background-color: #FFFFFF; padding: 20px; border-radius: 10px; border: 1px solid #FBCFE8;">
     <h4 style="color: #DB2777; margin-top: 0;">💌 Thông tin học tập của: {student_info['Ho_ten']}</h4>
@@ -129,23 +155,19 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Biểu đồ cột ngang phối màu Hồng Pastel + Xanh Mint
-st.subheader("📈 Biểu đồ cột điểm tổng kết của lớp")
-fig, ax = plt.subplots(figsize=(9, 5))
+# Biểu đồ cột ngang hiển thị toàn bộ lớp
+st.subheader("📈 Biểu đồ điểm tổng kết của toàn bộ lớp")
+fig, ax = plt.subplots(figsize=(9, max(4, len(df)*0.4)))
 
-# Dùng màu hồng pastel pha ánh tím nhẹ kết hợp viền xanh mint hiện đại
 bars = ax.barh(df['Ho_ten'], df['Tong_ket'], color='#F472B6', edgecolor='#10B981', linewidth=1.2)
-
 ax.set_xlabel('Điểm tổng kết', color='#4A5568', fontweight='bold', fontsize=11)
 ax.set_ylabel('Họ và tên sinh viên', color='#4A5568', fontweight='bold', fontsize=11)
 ax.set_xlim(0, 10)
-ax.invert_yaxis() # Đảo chiều để sinh viên 'An' đứng đầu tiên
+ax.invert_yaxis()
 
-# Ghi chú giá trị điểm lên đầu mỗi cột
 for i, v in enumerate(df['Tong_ket']):
     ax.text(v + 0.15, i, f"{v:.2f}", va='center', fontsize=10, color='#374151', fontweight='bold')
 
-# Phối màu nền cho khung biểu đồ khớp với web
 fig.patch.set_facecolor('#FFF5F7')
 ax.set_facecolor('#FFF5F7')
 ax.spines['top'].set_visible(False)
